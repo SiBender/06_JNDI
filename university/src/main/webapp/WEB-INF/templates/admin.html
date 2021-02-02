@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>University project</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="./css/fontawesome.all.css" />
+<link rel="stylesheet" type="text/css" href="./css/panel.css" />
+
+
+<script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default justify-content-center" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="./">University</a>
+			</div>
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="./admin">Administrative service</a></li>
+					<li><a href="./teacher">Teachers service</a></li>
+					<li><a href="./student">Students service</a></li>
+					<li><a href="./lesson">Lesson service</a></li>
+					<li><a href="./timetable">Timetable service</a></li>
+					<li><a href="./teacherstimetable">Teachers timetable</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Service status</h3>
+						</div>
+						<div class="panel-body">
+							<h3>List of faculties</h3>
+							<table class="table table-hover">
+								<thead class="thead-light" bgcolor="#f5f5f5">
+									<tr>
+										<th>Id</th>
+										<th>Short name</th>
+										<th>Full name</th>
+										<th width="50">&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="faculty : ${faculties}" scope="row">
+										<td th:text="${faculty.id}">id</td>
+										<td th:text="${faculty.shortName}">shortName</td>
+										<td th:text="${faculty.fullName}">fullName</td>
+										<td>
+											<a th:href="${'./admin/editfaculty?id=' + faculty.id}" style="color: #000000">
+												<i class="far fa-edit"></i>
+											</a>
+											<a th:href="${'./deletefaculty?id=' + faculty.id}" style="color: #000000">
+												<i class="fas fa-trash"></i>
+											</a>
+										</td>
+									</tr>
+								<form class="form-inline" action="#" th:action="@{/addfaculty}" th:object="${faculty}" method="post">
+										<tr scope="row">
+											<td>&nbsp;</td>
+											<td><input type="text" class="form-control" placeholder="Short name" th:field="*{shortName}" /></td>
+											<td><input type="text" class="form-control" placeholder="Full name" th:field="*{fullName}" /></td>
+											<td>
+												<input type="submit" value="add" class="btn btn-secondary"/>
+											</td>
+										</tr>
+									</form>
+								</tbody>
+							</table>
+							<br>
+							<h3>List of teachers</h3>
+							<table class="table table-hover">
+								<thead class="thead-light" bgcolor="#f5f5f5">
+									<tr>
+										<th width="40">Id</th>
+										<th>Full name</th>
+										<th width="50">&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="teacher : ${teachers}" scope="row">
+										<td th:text="${teacher.id}"></td>
+										<td th:text="${teacher.firstName + ' ' + teacher.lastName}"></td>
+										<td>
+											<a th:href="${'./admin/editteacher?id=' + teacher.id}" style="color: #000000">
+												<i class="far fa-edit"></i>
+											</a>
+											<a th:href="${'./deleteteacher?id=' + teacher.id}" style="color: #000000">
+												<i class="fas fa-trash"></i>
+											</a>
+										</td>
+									</tr>
+									<tr scope="row">
+										<td>&nbsp;</td>
+										<td align="center">
+											<div class="form-row">
+												<form class="form-inline" action="#" th:action="@{/addteacher}" th:object="${teacher}" method="post">
+													<div class="form-group col-md-3">
+														<input type="text" class="form-control" placeholder="Firstname" th:field="*{firstName}" />
+													</div>
+													<div class="form-group col-md-3">
+														<input type="text" class="form-control" placeholder="Lastname" th:field="*{lastName}" />
+													</div>
+													<div class="form-group col-md-3">
+														<select th:field="*{faculty.id}" class="form-control">
+															<option value="0">faculty...</option>
+														  <option th:each="faculty : ${faculties}" 
+														          th:value="${faculty.id}" 
+														          th:text="${faculty.fullName}">option text</option>
+														</select>
+													</div>
+													<div class="form-group col-md-1">
+														<td><input type="submit" value="add" class="btn btn-secondary"/></td>
+													</div>
+												</form>
+												</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<h3>List of groups</h3>
+							<table class="table table-hover">
+								<thead class="thead-light" bgcolor="#f5f5f5">
+									<tr>
+										<th>Id</th>
+										<th>Group name</th>
+										<th width="50">&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="group : ${groups}" scope="row">
+										<td th:text="${group.id}"></td>
+										<td th:text="${group.groupName}"></td>
+										<td>
+											<a th:href="${'./admin/editgroup?id=' + group.id}" style="color: #000000">
+												<i class="far fa-edit"></i>
+											</a>
+											<a th:href="${'./deletegroup?id=' + group.id}" style="color: #000000">
+												<i class="fas fa-trash"></i>
+											</a>
+										</td>
+									</tr>
+									<tr scope="row">
+										<td colspan="3" align="center">
+											<form class="form-inline" action="#" th:action="@{/addgroup}" th:object="${group}" method="post">
+												<input type="text" class="form-control" placeholder="Group name" th:field="*{groupName}" />
+												<select th:field="*{faculty.id}" class="form-control">
+													<option value="0">faculty...</option>
+												  <option th:each="faculty : ${faculties}" 
+												          th:value="${faculty.id}" 
+												          th:text="${faculty.fullName}">option text</option>
+												</select>
+												<input type="submit" value="add" class="btn btn-secondary"/>
+											</form>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

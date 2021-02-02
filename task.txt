@@ -1,0 +1,2 @@
+Data Source
+Create DataSource in web-project configuration files. Switch DAO layer to lookup DataSource by JNDI name.
